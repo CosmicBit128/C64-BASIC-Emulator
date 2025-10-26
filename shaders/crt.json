@@ -1,0 +1,20 @@
+{
+    "init": {
+        "ScreenTexture": "0",
+        "LastFrame": "1",
+
+        "Brightness": "1.20",
+        "Contrast": "1.25",
+        "Saturation": "1.0",
+        "Tint": "0.0",
+        "Gamma": "1.0",
+        "ScanlineShade": "0.67",
+        "OddlinePhase": "0.0",
+        "OddlineOffset": "0.0",
+        "WinRes": "WIN_RES"
+    },
+    "update": {
+        "Curvature": "self.c",
+        "CRTEnable": "self.ce"
+    }
+}
