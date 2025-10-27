@@ -45,7 +45,7 @@ class KeyboardHandler:
         elif e.key == pg.K_PAUSE:
             self.post.ce = not self.post.ce
 
-        elif e.key in [pg.K_LSHIFT, pg.K_RSHIFT, pg.K_CAPSLOCK, pg.K_LCTRL, pg.K_RCTRL, pg.K_LALT, pg.K_RALT]:
+        elif e.key in [pg.K_LSHIFT, pg.K_RSHIFT, pg.K_CAPSLOCK, pg.K_LCTRL, pg.K_RCTRL, pg.K_LALT, pg.K_RALT, pg.K_KP_PLUS, pg.K_KP_MINUS]:
             pass
 
         else:

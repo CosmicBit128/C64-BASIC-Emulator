@@ -1,0 +1,10 @@
+{
+    "init": {
+        "Palette": "self.color",
+        "WinRes": "WIN_RES/SCALING",
+        "Margin": "(32, 36)"
+    },
+    "update": {
+        "Screen": "self.app.screen.screen.flatten()"
+    }
+}

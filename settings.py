@@ -5,8 +5,8 @@ import json
 import glm
 
 # resolution
-SCALING = 2
-WIN_RES = glm.vec2(384*SCALING, 272*SCALING)
+SCALING = 3
+WIN_RES = glm.ivec2(384*SCALING, 272*SCALING)
 WIN_CENTER = int(WIN_RES.x//2), int(WIN_RES.y//2)
 FULLSCREEN = False
 FLAGS = (OPENGL | DOUBLEBUF | RESIZABLE) if not FULLSCREEN else (OPENGL | DOUBLEBUF | FULLSCREEN)

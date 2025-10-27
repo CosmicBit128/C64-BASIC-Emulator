@@ -113,7 +113,7 @@ void main() {
 
         // 9. Gamma correction (assume Gamma > 0)
         color = pow(clamp(color, 0.0, 1.0), vec3(1.0 / max(0.0001, Gamma)));
-        color = mix(color, texture2D(LastFrame, UV).rgb, 0.8);
+        // color = mix(color, texture2D(LastFrame, UV).rgb, 0.8);
     }
 
     fragColor = vec4(clamp(color, 0.0, 1.0), 1.0);

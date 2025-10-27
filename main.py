@@ -18,7 +18,7 @@ class Renderer:
         pg.display.gl_set_attribute(pg.GL_DEPTH_SIZE, 24)
 
         pg.display.set_mode(win_res, flags=FLAGS)
-        pg.display.set_caption("Commodore 64")
+        pg.display.set_caption("Commodore 64 BASIC Interpreter")
         self.ctx = mgl.create_context()
 
         self.ctx.enable(mgl.DEPTH_TEST | mgl.CULL_FACE | mgl.BLEND)
@@ -71,7 +71,7 @@ class Renderer:
             self.render()
 
     def create_mgl_texture_from_surface(self, surface):
-        surf_data = pg.image.tostring(surface, "RGBA", True)
+        surf_data = pg.image.tobytes(surface, "RGBA", True)
         width, height = surface.get_size()
         texture = self.ctx.texture((width, height), 4, data=surf_data)
         texture.build_mipmaps()

@@ -14,6 +14,7 @@ except ImportError:
 TOKEN_SPEC = [
     ('NUMBER',   r'\d+(\.\d*)?'),               # integer or decimal
     ('STRING',   r'"([^"]*)"'),                 # "string"
+    ('BITWISE',  r'\b(?:AND|OR|NOT)\b'),        # bitwise operators
     ('NAME',     r'[A-Za-z][A-Za-z0-9\$]*'),    # variable or keyword
     ('OP',       r'<=|>=|<>|[+\-*/\^=<>:;]'),   # operators, punctuation
     ('LPAREN',   r'\('),
@@ -74,6 +75,9 @@ def tokenize(s):
             tokens.append(('NUMBER', n))
         elif kind == 'STRING':
             tokens.append(('STRING', m.groups()[3]))
+        elif kind == 'BITWISE':
+            print(m.groups())
+            tokens.append(('BITWISE', m.groups()[4]))
         elif kind == 'NAME':
             up = txt.upper()
             if up in KEYWORDS:
@@ -92,7 +96,8 @@ def tokenize(s):
 # -----------------------
 # Expression parser: Shunting-Yard -> RPN
 # -----------------------
-PREC = {'^': 4, '*': 3, '/': 3, '+': 2, '-': 2,
+PREC = {'^': 5, '*': 4, '/': 4, '+': 3, '-': 3,
+        'AND': 2, 'OR': 2, 'NOT': 2,
         '=': 1, '<': 1, '>': 1, '<=':1, '>=':1, '<>':1}
 
 RIGHT_ASSOC = {'^'}
@@ -101,9 +106,11 @@ def to_rpn(tokens):
     """Convert token list to RPN using shunting-yard algorithm."""
     out = []
     stack = []
+    #print(tokens)
     
     for t in tokens:
         typ, val = t
+        #print(f"T: {t}\t\t|| Stack: {stack} || Output: {out}")
         if typ in ('NUMBER','STRING','NAME'):
             out.append(t)
         elif typ == 'FUNC':
@@ -127,6 +134,10 @@ def to_rpn(tokens):
                 else:
                     break
             stack.append(t)
+        elif typ == 'BITWISE':
+            while stack and stack[-1][0] == 'OP':
+                out.append(stack.pop())
+            stack.append(t)
         elif typ == 'COMMA':
             stack.append(t)
         else:
@@ -143,6 +154,7 @@ def to_rpn(tokens):
 def eval_rpn(rpn, env):
     """Evaluate an RPN expression with given environment."""
     st = []
+    print(rpn)
     for typ, val in rpn:
         if typ == 'NUMBER' or typ == 'STRING':
             st.append(val)
@@ -154,6 +166,7 @@ def eval_rpn(rpn, env):
             arg.reverse()
             st.append(eval_func(val, *arg))
         elif typ == 'OP':
+            print(st)
             if val == '-' and len(st)<=2:
                 st.append(-st.pop())
                 continue
@@ -170,6 +183,13 @@ def eval_rpn(rpn, env):
             elif val == '>=': st.append(1.0 if a>=b else 0.0)
             elif val == '<>': st.append(1.0 if a!=b else 0.0)
             else: raise RuntimeError(f"Unknown operator: {val}")
+        elif typ == 'BITWISE':
+            print(st)
+            if val!='NOT': b = st.pop()
+            a = st.pop()
+            if val == 'AND': st.append(int(a and b))
+            elif val == 'OR': st.append(int(a or b))
+            elif val == 'NOT': st.append(int(not a))
         elif typ == 'COMMA':
             pass
     return st[-1] if st else 0.0
@@ -519,7 +539,7 @@ class BasicInterpreter:
             return
         # unknown/unsupported: try to evaluate as expression or PRINT
         # fallback: try PRINT expr
-        if first[0] == 'NAME' or first[0] == 'NUMBER':
+        if first[0] == 'NAME' or first[0] == 'NUMBER' or first == ('BITWISE', 'NOT'):
             # try to evaluate
             try:
                 try:
