@@ -403,7 +403,22 @@ class BasicInterpreter:
             return
         # GOTO
         if first[0] == 'GOTO':
-            target = int(toks[1][1]) if toks[1][0] == 'NUMBER' else int(toks[1][1]) if toks[1][0]=='NAME' else int(toks[1][1])
+            # Yes... yes... I hear your screams. This piece of code makes
+            # absolutely no sense, and I agree. I was staring at this for
+            # 5 minutes thinking how do you even make this mistake. I did
+            # figure it out, even tho it's still weird. Apparently it has
+            # a name. Two actually. Here: "Mental Sandbox" Effect, Rubber
+            # Duck Phenomenon. I still think I am an idiot and I won't be
+            # mad if you do call me that too. This's the line in question:
+            #
+            # target = int(toks[1][1]) if toks[1][0] == 'NUMBER' else int(toks[1][1]) if toks[1][0]=='NAME' else int(toks[1][1])
+            # 
+            # It basically has 2 conditions and returns the same thing no
+            # matter what. I of course fixed it to optimize the code, but
+            # it was there before.
+            #                                                CosmicBit128
+            #                                                 29 Dec 2025
+            target = int(toks[1][1])
             idx = self._find_line_index(target)
             if idx is None:
                 raise RuntimeError(f"GOTO TO UNKNOWN line {target}")
