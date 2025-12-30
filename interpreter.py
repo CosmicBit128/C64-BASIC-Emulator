@@ -462,9 +462,26 @@ class BasicInterpreter:
                 print("Condition is true!")
                 # jump to line given after THEN (simple numeric token)
                 targettok = toks[then_idx+1]
-                if targettok[0] == 'NUMBER': target = int(targettok[1])
-                elif targettok[0] == 'NAME': target = int(targettok[1])
-                else: target = int(targettok[1])
+                
+                # if targettok[0] == 'NUMBER': target = int(targettok[1])
+                # elif targettok[0] == 'NAME': target = int(targettok[1])
+                # else: target = int(targettok[1])
+                #
+                # Yes... yes, yes, yes... I really have no words! Happens
+                # to everyone, right...? right? But even if not, it isn't
+                # that big of a deal. We learn from our mistakes. I guess
+                # some people don't (that may be me), but most people do.
+                # You may ask: "How can you make the same mistake twice?"
+                # To which I can reply: I got no fucking idea! Maybe I am
+                # just an idiot that can't realize how dumb they are. But
+                # just 'cause I am an idiot does not mean you are. Persue
+                # in your dreams, no matter what it takes. Don't ever let
+                # yourself give up. Don't ever let yourself down. Keep up
+                # with the great work. You are doing extremely well. Good
+                # luck.
+                #                                            CosmicBit128
+                #                        29 Dec 2025 (later the same day)
+                target = int(tergettok[1])
                 idx = self._find_line_index(target)
                 if idx is None:
                     raise RuntimeError(f"IF THEN to unknown line {target}")
